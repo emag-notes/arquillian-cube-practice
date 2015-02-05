@@ -61,6 +61,7 @@ public class UserResourceTest {
   public static void setUpClass() throws Exception {
     Connection conn = DriverManager.getConnection("jdbc:h2:tcp://localhost:1521/opt/h2-data/test", "sa", "sa");
     PreparedStatement ps = conn.prepareStatement("INSERT INTO user (id, name) VALUES (?, ?)");
+    
     ps.setInt(1, 1);
     ps.setString(2, "user1");
     ps.executeUpdate();
@@ -94,7 +95,6 @@ public class UserResourceTest {
 
     List<User> users =  response.readEntity(new GenericType<List<User>>(){});
     assertThat(users.size(), is(2));
-    System.out.println(users);
   }
 
   @Test @RunAsClient
@@ -107,7 +107,7 @@ public class UserResourceTest {
     assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
 
     User user =  response.readEntity(User.class);
-    System.out.println(user);
+    assertThat(user.getId(), is(1));
   }
 
 }
